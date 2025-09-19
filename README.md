@@ -24,10 +24,16 @@ consider PRs!
 
 ## Quick version
 
-- Just copy the contents of `overrides-dir` into your `swkotor/overrides` dir, wherever that happens to be.
-(It's in your steam dir.)
+- Fix the paths at the top of `build.sh` and run it. It should point to your actual KOTOR installation,
+which is probably in a directory named `swkotor`.
 
-- Start a new game.
+- Pay attention to the CLI output! I've tried to make it obvious, via messages on stdout, which options
+should be chosen when it isn't obvious.
+
+    - When the HoloPatcher app is used, the CLI output will contain the path to use for the mod directory.
+      Just copy and paste it into the UI. (Windows only, of course.)
+
+- Profit!
 
 ## Details
 
@@ -51,15 +57,18 @@ continue in the future? Storing everything here makes it future-proof.
 
 Phase 2: Across the downloaded mods, some of them have very specific installation instructions. Since we
 can't use a mod manager, it means we have to extract things into the overrides dir and manage the state
-manually. My goal is to end up with a complete and correct overrides dir stored here. To that end, I've
-prepped it all by following all of the extraction instructions to the letter. Ideally, if I ever want to
-play this in the future, my goal is that all I have to do is copy this repo's overrids dir into a fresh
-installation of the game's overrides dir, and everything will work. (Why hasn't someone done this already????)
+manually. In general, things that get extracted to the Override dir come first, overwriting anything that
+conflicts that came before, and things that are installed via an executable come later because they tend
+to ignore files that already exist, instead of overwriting them. My goal here is to make it as simple as
+possible to apply the recommended set of mods for a clean install of KOTOR. I wanted to be able to store
+a complete Override directory here, but these mods go beyond that, so the best I can do is create a
+script that anyone could run that will install all the mods in a predictable way. By storing a copy of
+all the here, I hope to make a reproducible build for a great KOTOR experience!
 
 I expect this takes up quite a bit of space, but storage is cheap, right?? Plus, I can archive this in a
 public GH project and save local space! My future goal is that running the game with all mods is a simple:
 
 - Install game from steam.
 - Clone this project (probably takes a while).
-- rsync or copy/paste this project's `overrides/` to `<steam dir>/swkotor/overrides/`.
+- Run this project's script to guide you through installing everything.
 - Play!
