@@ -45,10 +45,9 @@ the guide's advice. I'm going to store all the downloaded archives here for post
 on 14 Sep 2025, there was no problem downloading everything listed in the guide. Who knows if that will
 continue in the future? Storing everything here makes it future-proof.
 
-> **NOTE:** At least one of these mods (at the time of writing) is too large to store in github. That's
-  `Resolution\ 2560x1440-1306-1-1-1575389956.zip`, the general resolution upgrade. I've used 7zip to split
-  the archive into two pieces, so if you want to go back to the raw archive files, you'll have to extract
-  those as an initil step to get the original file.
+> **NOTE:** Some of the mods are too large to store in github, so I'm going to split them up. They'll need
+  to be reconstituted before working with them. The split files will be stored in separate subdirectories,
+  and I'll write a script to reconstitute them to make it easy. The original mod files will be gitignored.
 
 Phase 2: Across the downloaded mods, some of them have very specific installation instructions. Since we
 can't use a mod manager, it means we have to extract things into the overrides dir and manage the state
