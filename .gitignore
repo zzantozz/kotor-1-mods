@@ -1,4 +1,6 @@
 /build
+
+# Mods that are larger than 25M, found automatically with "find ... -size +25M"
 mod-archives/DrdProtHD.rar
 mod-archives/HQSkyboxesII_K1.7z
 mod-archives/ldr_repshipunknownworld.zip
@@ -6,4 +8,58 @@ mod-archives/Ultimate Character Overhaul -REDUX- ( LITE ) - TPC Version-1282-4-1
 mod-archives/Ultimate Korriban High Resolution - TPC Version-1367-1-2-1668960810.rar
 mod-archives/Ultimate Manaan High Resolution - TPC Version-1366-1-1-1669479766.rar
 mod-archives/Ultimate Taris High Resolution - TPC Version-1360-2-3-1669473109.rar
+mod-archives/vurt_k1_eh_retexture_v10.rar
+mod-archives/C_DrdWar.rar
+mod-archives/DrdProtHD.rar
+mod-archives/hd_kt_400_military_droid_carrier_and_lethisk_class_armed_freighter.rar
+mod-archives/hd_pc_portraits-v1.0.7z
+mod-archives/High Quality Cockpit Skyboxes M.zip
+mod-archives/HQSkyboxesII_K1.7z
+mod-archives/Ithorian HD.rar
+mod-archives/JC's Mandalorian Armor - Compatibility Patch-1282-4-1-1629713289.rar
+mod-archives/JC's Minor Fixes - Compatibility Patch-1282-4-1-1629713341.rar
+mod-archives/K1 Twi'lek Male NPC Diversity.7z
+mod-archives/k1rs_30fps_2560x1440.7z
+mod-archives/K1_Community_Patch_v1.10.0.zip
+mod-archives/KOTOR 1 Community Patch - Compatibility Patch-1282-4-1-1629713397.rar
+mod-archives/ldr_repshipunknownworld.zip
+mod-archives/Republic Soldier's New Shade - Compatibility Patch-1282-4-1-1629713494.rar
+mod-archives/Resolution 2560x1440-1306-1-1-1575389956.zip
+mod-archives/Taris_Reskin-10-1-0.zip
+mod-archives/Ultimate Character Overhaul -REDUX- ( LITE ) - TPC Version-1282-4-1-1628550322.rar
+mod-archives/Ultimate Dantooine High Resolution - TPC Version-1368-1-2-1669481433.rar
+mod-archives/Ultimate Endar Spire-Star Forgre-Yavin Station - TPC Version-1370-1-1-1669482487.rar
+mod-archives/Ultimate Kashyyyk High Resolution - TPC Version-1365-1-2-1669476173.rar
+mod-archives/Ultimate Korriban High Resolution - TPC Version-1367-1-2-1668960810.rar
+mod-archives/Ultimate Manaan High Resolution - TPC Version-1366-1-1-1669479766.rar
+mod-archives/Ultimate Taris High Resolution - TPC Version-1360-2-3-1669473109.rar
+mod-archives/Ultimate Tatooine High Resolution - TPC Version-1364-1-2-1669474980.rar
+mod-archives/Ultimate Unknown World High Resolution - TPC Version-1369-1-2-1675865873.rar
+mod-archives/vurt_k1_eh_retexture_v10.rar
+mod-archives/C_DrdWar.rar
+mod-archives/DrdProtHD.rar
+mod-archives/hd_kt_400_military_droid_carrier_and_lethisk_class_armed_freighter.rar
+mod-archives/hd_pc_portraits-v1.0.7z
+mod-archives/High Quality Cockpit Skyboxes M.zip
+mod-archives/HQSkyboxesII_K1.7z
+mod-archives/Ithorian HD.rar
+mod-archives/JC's Mandalorian Armor - Compatibility Patch-1282-4-1-1629713289.rar
+mod-archives/JC's Minor Fixes - Compatibility Patch-1282-4-1-1629713341.rar
+mod-archives/K1 Twi'lek Male NPC Diversity.7z
+mod-archives/k1rs_30fps_2560x1440.7z
+mod-archives/K1_Community_Patch_v1.10.0.zip
+mod-archives/KOTOR 1 Community Patch - Compatibility Patch-1282-4-1-1629713397.rar
+mod-archives/ldr_repshipunknownworld.zip
+mod-archives/Republic Soldier's New Shade - Compatibility Patch-1282-4-1-1629713494.rar
+mod-archives/Resolution 2560x1440-1306-1-1-1575389956.zip
+mod-archives/Taris_Reskin-10-1-0.zip
+mod-archives/Ultimate Character Overhaul -REDUX- ( LITE ) - TPC Version-1282-4-1-1628550322.rar
+mod-archives/Ultimate Dantooine High Resolution - TPC Version-1368-1-2-1669481433.rar
+mod-archives/Ultimate Endar Spire-Star Forgre-Yavin Station - TPC Version-1370-1-1-1669482487.rar
+mod-archives/Ultimate Kashyyyk High Resolution - TPC Version-1365-1-2-1669476173.rar
+mod-archives/Ultimate Korriban High Resolution - TPC Version-1367-1-2-1668960810.rar
+mod-archives/Ultimate Manaan High Resolution - TPC Version-1366-1-1-1669479766.rar
+mod-archives/Ultimate Taris High Resolution - TPC Version-1360-2-3-1669473109.rar
+mod-archives/Ultimate Tatooine High Resolution - TPC Version-1364-1-2-1669474980.rar
+mod-archives/Ultimate Unknown World High Resolution - TPC Version-1369-1-2-1675865873.rar
 mod-archives/vurt_k1_eh_retexture_v10.rar
