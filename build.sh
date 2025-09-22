@@ -21,7 +21,9 @@ to_game_dir() {
 
 to_ov_dir() {
   to_tmp_dir_flat "$1" "$2"
-  echo "Copy '$2' from tmp to override dir"
+  desc="files"
+  [ -z "$2" ] || desc="'$2'"
+  echo "Copy $files from tmp to override dir"
   while [ -n "$3" ]; do
     rm -rf "$tmp_dir/$3"
     shift
@@ -31,19 +33,17 @@ to_ov_dir() {
 
 to_ov_dir_no_clobber() {
   to_tmp_dir_flat "$1" "$2"
-  echo "Copy '$2' from tmp to override dir without clobbering"
+  desc="files"
+  [ -z "$2" ] || desc="'$2'"
+  echo "Copy $files from tmp to override dir without clobbering"
   cp -rv --no-clobber "$tmp_dir"/* "$output_ov_dir"
 }
 
-install_counter=1
 run_installer() {
-  out_dir="$output_tmp_dir/installer/$install_counter"
-  echo "Extract '$1' to '$out_dir'"
-  /c/Program\ Files/7-Zip/7z.exe x -y -o"$out_dir" "$1" &>/dev/null || die "Failed to extract '$1'"
-  install_counter=$((install_counter+1))
+  to_tmp_dir "$1"
   search="$2"
   [ -z "$search" ] && search="*.exe"
-  exe="$(find "$out_dir" -iname "$search")"
+  exe="$(find "$tmp_dir" -iname "$search")"
   if [ "$(echo "$exe" | wc -l)" = 1 ]; then
     echo " - run installer"
     rel_dir="$(dirname "$exe")"
@@ -74,6 +74,7 @@ to_tmp_dir_flat() {
 }
 
 big_warning() {
+  echo ''
   echo " ***************************************************************************"
   echo " ***************************************************************************"
   echo " **                                                                       **"
@@ -114,7 +115,6 @@ big_warning
 echo "You have to do two installs: first the main mod, then the K1CP"
 echo "compatibility patch! I will launch the installer twice, just to"
 echo "be sure you don't goof up!"
-big_warning
 
 run_installer 'mod-archives/K1 PAVOR v1.3.2.7z'
 run_installer 'mod-archives/K1 PAVOR v1.3.2.7z'
@@ -182,12 +182,13 @@ to_ov_dir 'mod-archives/juhaniCathar_head.zip'
 
 big_warning
 echo "Choose the 'community patch' option!"
-echo "Optionally install alternate outfits for Uthar or Yuthura after the main patch."
+echo "Optionally install alternate outfits for Uthar and/or Yuthura after the main patch."
+echo "I'm not re-running the installer here. Just run it yourself from the listed tmp dir"
+echo "after running but before exiting the first installer."
 run_installer "mod-archives/JC's Korriban - Back in Black for K1 v2.3.zip"
 
 big_warning
-echo "Choose Brown-Red-Blue Alternative!"
-big_warning
+echo "Choose the 'Brown-Red-Blue Alternative' option!"
 run_installer "mod-archives/JC's Fashion Line I - Cloaked Jedi Robes for K1 v1.4.7z"
 
 
@@ -250,7 +251,6 @@ to_ov_dir 'mod-archives/Loadscreens in Color.zip' 'Override/*'
 
 big_warning
 echo "Only standard is recommended. Other options aren't tested"
-big_warning
 run_installer 'mod-archives/New_Lightsaber_Blades_K1_v_1.rar'
 
 to_ov_dir "mod-archives/JC's Blaster Visual Effects for K1.zip" 'Override/*'
@@ -263,7 +263,6 @@ to_ov_dir 'mod-archives/Senni Vek Restoration CENSORED.rar' 'Senni Vek Restorati
 
 big_warning
 echo "Install two: the main mod and the SenniVek Restoration (not Ambush)"
-big_warning
 run_installer "mod-archives/K1 Twi'lek Male NPC Diversity.7z"
 
 to_ov_dir "mod-archives/K1 Twi'lek Male NPC Diversity.7z" "KotOR 1 Twi'lek Male NPC Diversity/Optional - Upscaled Textures/*"
@@ -338,7 +337,7 @@ to_ov_dir 'mod-archives/SAWL Patch.rar' 'SAWL Patch/Override/*'
 run_installer 'mod-archives/HSI.7z'
 run_installer 'mod-archives/BDB.7z'
 run_installer 'mod-archives/[K1]_Taris_Dueling_Arena_Adjustment_v1.4.7z'
-cp -D 'mod-archives/tar02_duelorg021.dlg' "$output_ov_dir"
+cp -v 'mod-archives/tar02_duelorg021.dlg' "$output_ov_dir"
 
 run_installer 'mod-archives/[K1]_Control_Panel_For_Kashyyyk_Shadowlands_Forcefield_v1.1.7z'
 run_installer 'mod-archives/[K1]_Vulkar_Accel_Bench_v1.0.1.7z'
@@ -412,11 +411,11 @@ echo "In the config dialog, set resolution to 1280x960, refresh to 60. Enable te
 echo "turn on v-sync and hw mouse, and leave the other three checkboxes disabled."
 "$output_game_dir/swconfig.exe"
 
-sed -i 's/^Width=.*/Height=2560/' "$output_game_dir/swkotor.ini"
+sed -i 's/^Width=.*/Width=2560/' "$output_game_dir/swkotor.ini"
 sed -i 's/^Height=.*/Height=1440/' "$output_game_dir/swkotor.ini"
 
 read -p "Resolution updated in swkotor.ini. Enter to continue ... " bleh
-read -p "About to remove game exe ... " bleh
+read -p "About to remove game exe. Enter to continue ... " bleh
 
 rm "$output_game_dir/swkotor.exe"
 
@@ -450,7 +449,7 @@ echo "have to navigate and run the patcher yourself. Do this in the new prompt:"
 echo "cd \"$tmp_dir\""
 echo "hires_patcher.bat"
 echo ""
-echo "Then, you should only need to enter new res: 2560x2440, and answer 'no'"
+echo "Then, you should only need to enter new res: 2560x1440, and answer 'no'"
 echo "If dialog text is cut off, then probably need to revisit this step."
 echo "Patch default file, swkotor.exe, and it should report testing and success. Then enter to exit."
 echo "Exit the cmd.exe prompt."
@@ -470,19 +469,22 @@ to_ov_dir 'mod-archives/KOTOR 1 Fade widescreen fix.zip' 'KOTOR 1 Fade widescree
 to_ov_dir 'mod-archives/[K1]_Main_Menu_Widescreen_Fix_v1.2.7z' '[K1]_Main_Menu_Widescreen_Fix_v1.2/For Override/*'
 to_ov_dir 'mod-archives/[K1]_Main_Menu_Widescreen_Fix_v1.2.7z' '[K1]_Main_Menu_Widescreen_Fix_v1.2/OPTIONAL/Vanilla Logo - Upscaled/*'
 
+big_warning
+echo "This is the updated cutscenes, which are quite large. It will take a while to extract!"
 # The slightly worse cutscene mod. Use the other instead. They can be installed the same way because
 # they just contain a bunch of movies.
 #to_tmp_dir 'mod-archives/Resolution 2560x1440-1306-1-1-1575389956.zip'
-to_tmp_dir 'mod-archives/k1rs_30fps_2560x1440.7z' '*' 'alts'
+
+to_tmp_dir 'mod-archives/k1rs_30fps_2560x1440.7z' '2560x1440/*' 'alts'
 rm "$output_game_dir/movies/biologo.bik"
 rm "$output_game_dir/movies/leclogo.bik"
 rm "$output_game_dir/movies/legal.bik"
-rm "$tmp_dir/biologo.bik"
-rm "$tmp_dir/leclogo.bik"
-rm "$tmp_dir/legal.bik"
+# Allow these to be missing from the mod
+rm -f "$tmp_dir/biologo.bik"
+rm -f "$tmp_dir/leclogo.bik"
+rm -f "$tmp_dir/legal.bik"
 # Moving instead of copying due to size
-mv "$tmp_dir"/* "$output_game_dir/movies"
-
+mv -v "$tmp_dir"/* "$output_game_dir/movies"
 
 run_installer 'mod-archives/Galaxy Map Fix Pack CENSORED.rar'
 to_ov_dir 'mod-archives/HR Menu Patch.zip' '16-by-9/gui.2560x1440/*'
@@ -504,7 +506,11 @@ to_ov_dir 'mod-archives/Miscellaneous Compatibility Patches-1282-4-1-1629713437.
 to_ov_dir 'mod-archives/Miscellaneous Compatibility Patches-1282-4-1-1629713437.rar' "Miscellaneous Compatibility Patches/Thigh-High Boots for Twi'lek - Patch/NPC Replacement/*.tga"
 to_ov_dir "mod-archives/Republic Soldier's New Shade - Compatibility Patch-1282-4-1-1629713494.rar" "Republic Soldier's New Shade - Patch/New Shade/*"
 
+big_warning
+echo "Here's another thing that doesn't work via script. Run this exe manually:"
+echo "$tmp_dir/4gb_patch.exe"
 to_tmp_dir 'mod-archives/4gb_patch.zip'
-"$tmp_dir/4gb_patch.exe"
+read -p "Enter to continue ..."
 
-read -p "All done! Enter to continue..." bleh
+echo ''
+echo "All done!"
