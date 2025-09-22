@@ -470,16 +470,19 @@ to_ov_dir 'mod-archives/KOTOR 1 Fade widescreen fix.zip' 'KOTOR 1 Fade widescree
 to_ov_dir 'mod-archives/[K1]_Main_Menu_Widescreen_Fix_v1.2.7z' '[K1]_Main_Menu_Widescreen_Fix_v1.2/For Override/*'
 to_ov_dir 'mod-archives/[K1]_Main_Menu_Widescreen_Fix_v1.2.7z' '[K1]_Main_Menu_Widescreen_Fix_v1.2/OPTIONAL/Vanilla Logo - Upscaled/*'
 
-# The slightly worse cutscene mod. Use the other instead.
+# The slightly worse cutscene mod. Use the other instead. They can be installed the same way because
+# they just contain a bunch of movies.
 #to_tmp_dir 'mod-archives/Resolution 2560x1440-1306-1-1-1575389956.zip'
-#rm "$output_game_dir/movies/biologo.bik"
-#rm "$output_game_dir/movies/leclogo.bik"
-#rm "$output_game_dir/movies/legal.bik"
-#rm "$tmp_dir/biologo.bik"
-#rm "$tmp_dir/leclogo.bik"
-#rm "$tmp_dir/legal.bik"
+to_tmp_dir 'mod-archives/k1rs_30fps_2560x1440.7z' '*' 'alts'
+rm "$output_game_dir/movies/biologo.bik"
+rm "$output_game_dir/movies/leclogo.bik"
+rm "$output_game_dir/movies/legal.bik"
+rm "$tmp_dir/biologo.bik"
+rm "$tmp_dir/leclogo.bik"
+rm "$tmp_dir/legal.bik"
 # Moving instead of copying due to size
-#mv "$tmp_dir"/* "$output_game_dir/movies"
+mv "$tmp_dir"/* "$output_game_dir/movies"
+
 
 run_installer 'mod-archives/Galaxy Map Fix Pack CENSORED.rar'
 to_ov_dir 'mod-archives/HR Menu Patch.zip' '16-by-9/gui.2560x1440/*'
