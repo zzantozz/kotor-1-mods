@@ -1,4 +1,4 @@
-!/bin/bash -e
+#!/bin/bash -e
 
 die() {
   echo "ERROR: $1" >&2
@@ -20,13 +20,19 @@ to_game_dir() {
 }
 
 to_ov_dir() {
-  echo "Extract '$1' to override dir"
   to_tmp_dir_flat "$1" "$2"
+  echo "Copy '$2' from tmp to override dir"
   while [ -n "$3" ]; do
     rm -rf "$tmp_dir/$3"
     shift
   done
   cp -rv "$tmp_dir"/* "$output_ov_dir"
+}
+
+to_ov_dir_no_clobber() {
+  to_tmp_dir_flat "$1" "$2"
+  echo "Copy '$2' from tmp to override dir without clobbering"
+  cp -rv --no-clobber "$tmp_dir"/* "$output_ov_dir"
 }
 
 install_counter=1
@@ -51,6 +57,7 @@ run_installer() {
 to_tmp_dir() {
   mkdir -p "$output_tmp_dir"
   tmp_dir="$(mktemp -d -p "$output_tmp_dir")"
+  echo "Extract '$1' to '$tmp_dir'"
   files="$2"
   [ -z "$files" ] && files="*"
   /c/Program\ Files/7-Zip/7z.exe x -y -o"$tmp_dir" "$1" "$files" &>/dev/null || die "Failed to extract '$1'"
@@ -61,6 +68,7 @@ to_tmp_dir_flat() {
   files="$2"
   [ -z "$files" ] && files="*"
   tmp_dir="$(mktemp -d -p "$output_tmp_dir")"
+  echo "Extract '$1' to '$tmp_dir'"
   /c/Program\ Files/7-Zip/7z.exe e -y -o"$tmp_dir" "$1" "$files" &>/dev/null || die "Failed to extract '$1'"
   return 0
 }
@@ -132,9 +140,10 @@ to_ov_dir "mod-archives/JC's Republic Soldier Fix for K1 v1.3.zip" 'Override/*'
 to_ov_dir "mod-archives/JC's Republic Soldier Fix for K1 v1.3.zip" 'Optional/*'
 
 big_warning
-echo "Install options 3 and 5!"
-big_warning
+echo "Install exactly and only options 3 and 5!"
+echo "I'll launch the installer twice for you."
 
+run_installer "mod-archives/[K1]_Republic_Soldier's_New_Shade_v1.1.1.7z"
 run_installer "mod-archives/[K1]_Republic_Soldier's_New_Shade_v1.1.1.7z"
 
 to_ov_dir 'mod-archives/hd_pc_portraits-v1.0.7z' 'hd_pc_portraits/Override/*'
@@ -150,6 +159,8 @@ to_ov_dir 'mod-archives/Quanon_Gammoreans.rar' 'Quanon_Gammoreans/*'
 to_ov_dir 'mod-archives/C_DrdWar.rar'
 to_ov_dir 'mod-archives/AstromechHD.rar'
 
+big_warning
+echo "Use Option A - Slim Necks!"
 run_installer "mod-archives/K1 Twi'lek Heads v1.3.3.7z"
 
 to_ov_dir 'mod-archives/hd_twilek_female.rar'
@@ -172,8 +183,6 @@ to_ov_dir 'mod-archives/juhaniCathar_head.zip'
 big_warning
 echo "Choose the 'community patch' option!"
 echo "Optionally install alternate outfits for Uthar or Yuthura after the main patch."
-big_warning
-
 run_installer "mod-archives/JC's Korriban - Back in Black for K1 v2.3.zip"
 
 big_warning
@@ -265,6 +274,8 @@ to_ov_dir 'mod-archives/Bek Control Room Restoration 1.1.zip' 'Bek Control Room 
 to_ov_dir 'mod-archives/JCDE.7z' 'JCDE/dan13_dorak.dlg'
 to_ov_dir 'mod-archives/J Dialogue Restoration.7z' 'J Dialogue Restoration/Installation/*'
 
+big_warning
+echo "Just use the Basic installation"
 run_installer "mod-archives/JC's Vision Enhancement for K1 v1.2.zip"
 
 to_ov_dir 'mod-archives/LDD.rar' 'LDD/*'
@@ -290,6 +301,8 @@ echo "Author recommends option 2."
 big_warning
 run_installer "mod-archives/PC Dialogue with Davik's Slaves Change.7z"
 
+big_warning
+echo "Choose the option you want - either enhance security spikes, or replace them with credits. Read the descriptions."
 run_installer "mod-archives/JC's Security Spikes for K1 v1.2.zip"
 
 big_warning
@@ -322,8 +335,6 @@ run_installer 'mod-archives/KOTOR1-Thematic-The-One_v1.0.2_spoiler-free.zip'
 run_installer 'mod-archives/SAwL CENSORED.rar'
 to_ov_dir 'mod-archives/SAWL Patch.rar' 'SAWL Patch/Override/*'
 
-big_warning
-echo "This mod failed when installing standalone - couldn't find appearance.2da file. Maybe it'll work in a full install?"
 run_installer 'mod-archives/HSI.7z'
 run_installer 'mod-archives/BDB.7z'
 run_installer 'mod-archives/[K1]_Taris_Dueling_Arena_Adjustment_v1.4.7z'
@@ -374,41 +385,111 @@ run_installer 'mod-archives/visual_effects_k1.7z'
 run_installer 'mod-archives/CK-Minor music tweaks.zip'
 run_installer 'mod-archives/NPC_Alignment_Fix_v1_1.rar'
 
+# Time for widescreen, before the galaxy map fix. Some notes to myself, though they're
+# all implemented below already:
+# display settings: set scale to 100%
+# open kotor game folder
+# run swconfig.exe
+# set 1280/960, refresh 60, tex pack high, v-sync on, hw mouse on, other three opts off
+# edit swkotor.ini and manually set res to 2560/1440
+# kotor editable executable
+# - replace swkotor.exe with the one from the archive
+# uniws
+# - launch, select Star Wars KOTOR 1024x768
+# - select path to swkotor.exe
+# - width and height should be filled in
+# - update to correct res
+# - hit 'Patch"
+# - close
+# ... and then continue with more stuff, not noted here.
+# Note that the "more stuff" is covered by the KOTOR community build, and some, but not all of it,
+# is mentioned in the widescreen video.
+
+read -p "Ensure Display Settings > Scale is 100%. Enter to continue" bleh
+
 big_warning
-echo "Apparently need to stop here and go do widescreen stuff, or you can just continue ..."
-echo "https://kotor.neocities.org/modding/mod_builds/k1/spoiler-free#Optional_Widescreen"
+echo "In the config dialog, set resolution to 1280x960, refresh to 60. Enable texture pack 'high',"
+echo "turn on v-sync and hw mouse, and leave the other three checkboxes disabled."
+"$output_game_dir/swconfig.exe"
 
-# Mods I've downloaded for widescreen, so I can audit downloads vs this script:
-# '[K1]_Main_Menu_Widescreen_Fix_v1.2.7z'
-# '[K1]_Workbench_Upgrade_Screen_Camera_Tweak.7z'
-# "HD Robe Icons for JC's Cloaked Jedis and Effix's Extra Robes.zip"
-# 'hd_ui_menupack_PV.7z'
-# 'k1hrm-1.5.7z'
-# 'KOTOR 1 Fade widescreen fix.zip'
-# 'Pretty Good! Icons for KotOR 1.0.7z'
-# 'Upscaled Computer.rar'
-# 'ws models for swkotor-1211-0-22-1550195260.zip'
-# 'Resolution 2560x1440-1306-1-1-1575389956.zip'
-# 'KOTOR Editable Executable.rar'
-# 'uniws.zip'
+sed -i 's/^Width=.*/Height=2560/' "$output_game_dir/swkotor.ini"
+sed -i 's/^Height=.*/Height=1440/' "$output_game_dir/swkotor.ini"
 
-read -p "Enter to continue ... " bleha
+read -p "Resolution updated in swkotor.ini. Enter to continue ... " bleh
+read -p "About to remove game exe ... " bleh
 
-# If widescreen was done, then can apply '4gb_patch.zip'
-# Otherwise, continue on
+rm "$output_game_dir/swkotor.exe"
+
+read -p "Game exe is gone. Enter to continue ..." bleh
+
+to_game_dir "mod-archives/KOTOR Editable Executable.rar" "KOTOR Editable Executable/swkotor.exe"
+
+read -p "Is the exe there now? Enter to continue ..." bleh
+
+to_tmp_dir "mod-archives/uniws.zip"
+
+big_warning
+echo "Now modify the exe for widescreen."
+echo ' - in the "Game" field, select "Star Wars: KOTOR (1024x768 interface)"'
+echo ' - select path to swkotor dir'
+echo ' - you have the right path if width and height are filled in'
+echo ' - update width and height to 2560x1440'
+echo ' - hit "Patch"'
+echo ' - should be successful, then okay and close'
+
+"$tmp_dir/uniws.exe"
+
+to_ov_dir 'mod-archives/ws models for swkotor-1211-0-22-1550195260.zip'
+
+to_tmp_dir 'mod-archives/k1hrm-1.5.7z'
+mv "$output_game_dir/swkotor.exe" "$tmp_dir" || die "Failed to move exe to tmp dir for modding"
+
+big_warning
+echo "I can't figure out the right syntax to execute these commands in a separate cmd.exe window, so you"
+echo "have to navigate and run the patcher yourself. Do this in the new prompt:"
+echo "cd \"$tmp_dir\""
+echo "hires_patcher.bat"
+echo ""
+echo "Then, you should only need to enter new res: 2560x2440, and answer 'no'"
+echo "If dialog text is cut off, then probably need to revisit this step."
+echo "Patch default file, swkotor.exe, and it should report testing and success. Then enter to exit."
+echo "Exit the cmd.exe prompt."
+echo "Note that it creates a backup copy of the exe."
+start cmd.exe
+read -p "Enter when done with hires_patcher.bat because it doesn't seem to wait..."
+mv "$tmp_dir/swkotor.exe" "$output_game_dir" || die "Failed to move modified exe back to game dir"
+
+to_ov_dir 'mod-archives/k1hrm-1.5.7z' '16-by-9/gui.2560x1440/*'
+
+to_ov_dir 'mod-archives/hd_ui_menupack_PV.7z' 'hd_ui_menupack_PV/Override/*'
+to_ov_dir 'mod-archives/[K1]_Workbench_Upgrade_Screen_Camera_Tweak.7z' '[K1]_Workbench_Upgrade_Screen_Camera_Tweak/FOR OVERRIDE/*'
+to_ov_dir_no_clobber 'mod-archives/Pretty Good! Icons for KotOR 1.0.7z' 'tpc/*'
+to_ov_dir "mod-archives/HD Robe Icons for JC's Cloaked Jedis and Effix's Extra Robes.zip" "HD Robe Icons for JC's Cloaked Jedis and Effix's Extra Robes/JC's Cloaked Jedis/Brown-Red-Blue Alternative/*"
+to_ov_dir 'mod-archives/Upscaled Computer.rar'
+to_ov_dir 'mod-archives/KOTOR 1 Fade widescreen fix.zip' 'KOTOR 1 Fade widescreen fix/2560x1440/*'
+to_ov_dir 'mod-archives/[K1]_Main_Menu_Widescreen_Fix_v1.2.7z' '[K1]_Main_Menu_Widescreen_Fix_v1.2/For Override/*'
+to_ov_dir 'mod-archives/[K1]_Main_Menu_Widescreen_Fix_v1.2.7z' '[K1]_Main_Menu_Widescreen_Fix_v1.2/OPTIONAL/Vanilla Logo - Upscaled/*'
+
+# The slightly worse cutscene mod. Use the other instead.
+#to_tmp_dir 'mod-archives/Resolution 2560x1440-1306-1-1-1575389956.zip'
+#rm "$output_game_dir/movies/biologo.bik"
+#rm "$output_game_dir/movies/leclogo.bik"
+#rm "$output_game_dir/movies/legal.bik"
+#rm "$tmp_dir/biologo.bik"
+#rm "$tmp_dir/leclogo.bik"
+#rm "$tmp_dir/legal.bik"
+# Moving instead of copying due to size
+#mv "$tmp_dir"/* "$output_game_dir/movies"
 
 run_installer 'mod-archives/Galaxy Map Fix Pack CENSORED.rar'
-## would install 'HR Menu Patch.zip" here, if doing widescreen
-read -p "If you want to widescreen, you need to add the appropriate path for the previous mod here. Enter to continue..."
+to_ov_dir 'mod-archives/HR Menu Patch.zip' '16-by-9/gui.2560x1440/*'
 
 to_game_dir 'mod-archives/Remove Duplicate TGA-TPC-1384-1-2-1616219479.zip'
 big_warning
-echo "Say that TCP should be deleted and don't manually confirm!"
+echo "Say that TPC should be deleted and don't manually confirm!"
 echo "If it says it finished but didn't delete any files, it didn't work!"
+echo " this didn't work - returned 'unknown input, exiting'"
 "$output_game_dir/DelDuplicateTGA-TPC.bat"
-
-run_installer 'mod-archives/
-run_installer 'mod-archives/
 
 to_ov_dir "mod-archives/JC's Minor Fixes - Compatibility Patch-1282-4-1-1629713341.rar" "JC's Minor Fixes - Patch/Aesthetic Improvements/*"
 to_ov_dir "mod-archives/JC's Minor Fixes - Compatibility Patch-1282-4-1-1629713341.rar" "JC's Minor Fixes - Patch/Resolution Fixes/*"
@@ -420,9 +501,7 @@ to_ov_dir 'mod-archives/Miscellaneous Compatibility Patches-1282-4-1-1629713437.
 to_ov_dir 'mod-archives/Miscellaneous Compatibility Patches-1282-4-1-1629713437.rar' "Miscellaneous Compatibility Patches/Thigh-High Boots for Twi'lek - Patch/NPC Replacement/*.tga"
 to_ov_dir "mod-archives/Republic Soldier's New Shade - Compatibility Patch-1282-4-1-1629713494.rar" "Republic Soldier's New Shade - Patch/New Shade/*"
 
-big_warning
-echo "Can only apply the 4GB patch with Steam if the widescreen mods have been done!"
-echo "See https://kotor.neocities.org/modding/mod_builds/k1/spoiler-free#4GB_Patcher" 
-echo "Also see earlier step that requires widescreen."
-read -p "Enter to continue..." bleh
+to_tmp_dir 'mod-archives/4gb_patch.zip'
+"$tmp_dir/4gb_patch.exe"
 
+read -p "All done! Enter to continue..." bleh
