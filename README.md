@@ -51,9 +51,10 @@ the guide's advice. I'm going to store all the downloaded archives here for post
 on 14 Sep 2025, there was no problem downloading everything listed in the guide. Who knows if that will
 continue in the future? Storing everything here makes it future-proof.
 
-> **NOTE:** Some of the mods are too large to store in github, so I'm going to split them up. They'll need
-  to be reconstituted before working with them. The split files will be stored in separate subdirectories,
-  and I'll write a script to reconstitute them to make it easy. The original mod files will be gitignored.
+> **NOTE:** Some of the mods are too large to store in github, so I've split them up. They'll need to be
+  reconstituted before working with them. The split files are stored in separate subdirectories in,
+  `mod-archives-splits`. The `unsplit.sh` script can reconstitute a mod from one of those directories.
+  I still need to come up with something to reconstitute everything before installing.
 
 Phase 2: Across the downloaded mods, some of them have very specific installation instructions. Since we
 can't use a mod manager, it means we have to extract things into the overrides dir and manage the state
@@ -63,7 +64,7 @@ to ignore files that already exist, instead of overwriting them. My goal here is
 possible to apply the recommended set of mods for a clean install of KOTOR. I wanted to be able to store
 a complete Override directory here, but these mods go beyond that, so the best I can do is create a
 script that anyone could run that will install all the mods in a predictable way. By storing a copy of
-all the here, I hope to make a reproducible build for a great KOTOR experience!
+all that here, I hope to make a reproducible build for a great KOTOR experience!
 
 I expect this takes up quite a bit of space, but storage is cheap, right?? Plus, I can archive this in a
 public GH project and save local space! My future goal is that running the game with all mods is a simple:
